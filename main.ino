@@ -90,7 +90,7 @@ void loop() {
     {
       digitalWrite(Lights, HIGH);
     }
-    if(count==0)
+    if(count==0 && )
     {
       digitalWrite(Lights,LOW);
     }
