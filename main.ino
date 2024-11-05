@@ -3,10 +3,16 @@
 
 const int pirOutsidePin = 10;     // Outside PIR motion sensor pin
 const int pirRoomSidePin = 3;   // Room-side PIR motion sensor pin
+const int clapMod = 5;
+const int buttonPin = 6;
+
 const int led = 2;
 const int Lights = 13;
+
 bool outstat = true;
 bool instat = true; 
+bool clapstat = true;
+bool buttonstat = true;
 
 int count = 0;                   // Counter for people in the room   
 
@@ -19,6 +25,8 @@ void setup() {
     // Set up PIR sensor pins
     pinMode(pirOutsidePin, INPUT);  // Set outside PIR sensor as input
     pinMode(pirRoomSidePin, INPUT); // Set room-side PIR sensor as input
+    pinMode(clapMod,INPUT);
+    pinMode(buttonPin,INPUT_PULLUP);
     pinMode(led, OUTPUT);
     pinMode(Lights,OUTPUT);
     
@@ -26,7 +34,7 @@ void setup() {
     lcd.init();
     lcd.backlight();
     lcd.setCursor(0, 0);
-    lcd.print("Initializing...");
+    lcd.print("Initializing..");
     delay(2000);
     updateDisplay();
 }
@@ -35,7 +43,8 @@ void loop() {
     // Detect entry attempt
     outstat = digitalRead(pirOutsidePin); // False on motion
     instat = digitalRead(pirRoomSidePin); // True on motion
-    
+    clapstat = digitalRead(clapMod);
+    buttonstat = digitalRead(buttonPin);
     
     // Entry detection
     if (!outstat && count < 5) { // Motion detected outside
@@ -54,7 +63,7 @@ void loop() {
                 Serial.print("Count: ");
                 Serial.println(count);
                 updateDisplay();
-                delay(2500);  // Small delay to prevent multiple detections
+                delay(1000);  // Small delay to prevent multiple detections
                 digitalWrite(led, LOW);
                 break;
             }
@@ -67,7 +76,7 @@ void loop() {
     { // Motion detected inside
         unsigned long startTime = millis();
         digitalWrite(led, HIGH); // Indicator LED
-        
+      
         // Wait up to 500 ms for outside sensor to detect exit
         while ((millis() - startTime) < 500) {
             outstat = digitalRead(pirOutsidePin);
@@ -80,19 +89,26 @@ void loop() {
                 Serial.print("Count: ");
                 Serial.println(count);
                 updateDisplay();
-                delay(2500);  // Small delay to prevent multiple detections
+                delay(1000);  // Small delay to prevent multiple detections
                 digitalWrite(led, LOW); // Indicator LED
                 break;
             }
         }
     }
-    if(count>0)
+    if(count>0 )
     {
       digitalWrite(Lights, HIGH);
     }
-    if(count==0 && )
+    if(count==0)
     {
       digitalWrite(Lights,LOW);
+    }
+    if(clapstat == false || buttonstat == false)
+    {
+      count = 0 ;
+      digitalWrite(Lights,LOW);
+      lcd.setCursor(0, 0);
+      lcd.print(".Menaually Off.");
     }
 }
 
