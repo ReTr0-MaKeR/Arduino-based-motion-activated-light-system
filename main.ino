@@ -13,6 +13,7 @@ bool outstat = true;
 bool instat = true; 
 bool clapstat = true;
 bool buttonstat = true;
+bool flag = false;
 
 int count = 0;                   // Counter for people in the room   
 
@@ -98,17 +99,33 @@ void loop() {
     if(count>0 )
     {
       digitalWrite(Lights, HIGH);
+      flag = true;
     }
     if(count==0)
     {
       digitalWrite(Lights,LOW);
     }
-    if(clapstat= false || buttonstat == false)  //clapstat= false ||
+    if(clapstat== false || buttonstat == false)  // remove the part (clapstat= false || ) to avoid unwanted sound interuption
     {
-      count = 0 ;
-      digitalWrite(Lights,LOW);
-      lcd.setCursor(0, 0);
-      lcd.print(".Menaually Off.");
+        if(flag==false)
+        {
+            digitalWrite(Lights, HIGH);
+            lcd.setCursor(0, 0);
+            lcd.print(".Menaually ON..");
+            flag = true
+        }
+        
+    }
+    if(clapstat== false || buttonstat == false)  // remove the part (clapstat= false || ) to avoid unwanted sound interuption
+    {
+        if(flag ==true)
+        {
+          count = 0 ;
+          digitalWrite(Lights,LOW);
+          lcd.setCursor(0, 0);
+          lcd.print(".Menaually Off.");
+          flag = false;
+        }
     }
 }
 
