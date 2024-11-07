@@ -103,7 +103,7 @@ void loop() {
     {
       digitalWrite(Lights,LOW);
     }
-    if(clapstat == false || buttonstat == false)
+    if(clapstat= false || buttonstat == false)  //clapstat= false ||
     {
       count = 0 ;
       digitalWrite(Lights,LOW);
