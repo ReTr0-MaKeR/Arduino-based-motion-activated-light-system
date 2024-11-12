@@ -9,8 +9,8 @@ const int buttonPin = 6;
 const int led = 2;
 const int Lights = 13;
 
-bool outstat = false;
-bool instat = false; 
+bool outstat = true;
+bool instat = true; 
 bool clapstat = true;
 bool buttonstat = true;
 bool flag = false;
