@@ -20,7 +20,7 @@ bool mflag = false;
 int count = 0;                   // Counter for people in the room   
 
 // Initialize the LCD with I2C address (0x27 for 16x2display)
-LiquidCrystal_I2C lcd(32, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
     Serial.begin(9600);
